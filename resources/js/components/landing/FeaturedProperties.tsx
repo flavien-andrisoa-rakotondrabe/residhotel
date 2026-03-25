@@ -82,7 +82,7 @@ export default function FeaturedProperties() {
                                 </button>
                                 {p.badge && (
                                     <div className="absolute top-4 left-4">
-                                        <Badge className="font-body border-0 bg-accent text-xs font-semibold text-accent-foreground shadow-md">
+                                        <Badge className="font-body border-0 bg-accent-fix text-xs font-semibold text-accent-foreground-fix shadow-md">
                                             {p.badge}
                                         </Badge>
                                     </div>
@@ -125,7 +125,10 @@ export default function FeaturedProperties() {
                                     </div>
                                 </div>
                                 <Link href="/property/1">
-                                    <Button className="font-body mt-4 w-full rounded-xl bg-gradient-brand font-semibold text-primary-foreground-fix hover:opacity-90">
+                                    <Button
+                                        size="lg"
+                                        className="font-body mt-4 w-full rounded-xl bg-gradient-brand font-semibold text-primary-foreground-fix hover:opacity-90"
+                                    >
                                         Voir le bien
                                     </Button>
                                 </Link>

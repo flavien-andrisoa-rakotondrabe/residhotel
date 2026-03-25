@@ -89,7 +89,7 @@ export default function Navbar() {
                         <DropdownMenuTrigger asChild>
                             <Button
                                 variant="ghost"
-                                size="sm"
+                                size="lg"
                                 className="font-body text-white/85 hover:bg-white/10 hover:text-white"
                             >
                                 <Globe className="mr-1.5 h-4 w-4" />
@@ -207,7 +207,7 @@ export default function Navbar() {
                     ) : (
                         <Link href={login()}>
                             <Button
-                                size="sm"
+                                size="lg"
                                 className="font-body border-0 bg-gradient-amber font-semibold text-white shadow-md hover:opacity-90"
                             >
                                 {'Connexion / Inscription'}
