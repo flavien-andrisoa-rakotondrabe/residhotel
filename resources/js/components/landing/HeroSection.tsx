@@ -92,10 +92,10 @@ export default function HeroSection() {
     return (
         <section
             ref={sectionRef}
-            className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden"
+            className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[url(/images/hero-bg.jpg)] bg-fixed bg-center"
         >
             {/* ── Parallax background ── */}
-            <div
+            {/* <div
                 className="absolute inset-0 will-change-transform"
                 style={{
                     transform: `translateY(${scrollY * 0.35}px) scale(1.12)`,
@@ -107,7 +107,7 @@ export default function HeroSection() {
                     className="h-full w-full object-cover"
                     loading="eager"
                 />
-            </div>
+            </div> */}
 
             {/* ── Cinematic overlay: dual-layer for depth ── */}
             <div className="absolute inset-0 bg-gradient-to-b from-primary-fix/50 via-primary-fix/40 to-primary-fix/80" />

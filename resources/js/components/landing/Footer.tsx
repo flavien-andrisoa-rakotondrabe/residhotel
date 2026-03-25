@@ -69,14 +69,14 @@ export default function Footer() {
                         <div className="space-y-2.5">
                             <a
                                 href="tel:+33100000000"
-                                className="font-body flex items-center gap-2.5 text-sm text-primary-foreground-fix/70 transition-colors hover:text-primary-foreground"
+                                className="font-body flex items-center gap-2.5 text-sm text-primary-foreground-fix/70 transition-colors hover:text-primary-foreground-fix"
                             >
                                 <Phone className="h-4 w-4" />
                                 +33 1 00 00 00 00
                             </a>
                             <a
                                 href="mailto:contact@residotel.com"
-                                className="font-body flex items-center gap-2.5 text-sm text-primary-foreground-fix/70 transition-colors hover:text-primary-foreground"
+                                className="font-body flex items-center gap-2.5 text-sm text-primary-foreground-fix/70 transition-colors hover:text-primary-foreground-fix"
                             >
                                 <Mail className="h-4 w-4" />
                                 contact@residotel.com
@@ -101,14 +101,14 @@ export default function Footer() {
                                         href.startsWith('http') ? (
                                             <a
                                                 href={href}
-                                                className="font-body text-sm text-primary-foreground-fix/60 transition-colors hover:text-primary-foreground"
+                                                className="font-body text-sm text-primary-foreground-fix/60 transition-colors hover:text-primary-foreground-fix"
                                             >
                                                 {label}
                                             </a>
                                         ) : (
                                             <Link
                                                 href={href}
-                                                className="font-body text-sm text-primary-foreground-fix/60 transition-colors hover:text-primary-foreground"
+                                                className="font-body text-sm text-primary-foreground-fix/60 transition-colors hover:text-primary-foreground-fix"
                                             >
                                                 {label}
                                             </Link>
