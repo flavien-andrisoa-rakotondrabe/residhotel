@@ -17,6 +17,9 @@ Route::get('language/{locale}', function ($locale) {
         Session::put('locale', $locale);
     }
     return redirect()->back();
-});
+})->name('lang');
+
+Route::get('/search', [SearchController::class, 'index'])
+    ->name('search');
 
 require __DIR__.'/settings.php';
