@@ -1,6 +1,13 @@
 import { Head } from '@inertiajs/react';
+import FeaturedProperties from '@/components/landing/FeaturedProperties';
+import Footer from '@/components/landing/Footer';
 import HeroSection from '@/components/landing/HeroSection';
+import HostCTA from '@/components/landing/HostCTA';
+import HowItWorks from '@/components/landing/HowItWorks';
 import Navbar from '@/components/landing/Navbar';
+import NearbyProperties from '@/components/landing/NearbyProperties';
+import PopularDestinations from '@/components/landing/PopularDestinations';
+import Testimonials from '@/components/landing/Testimonials';
 
 export default function Welcome() {
     return (
@@ -14,6 +21,13 @@ export default function Welcome() {
             </Head>
             <Navbar />
             <HeroSection />
+            <NearbyProperties />
+            <PopularDestinations />
+            <FeaturedProperties />
+            <HowItWorks />
+            <Testimonials />
+            <HostCTA />
+            <Footer />
         </>
     );
 }

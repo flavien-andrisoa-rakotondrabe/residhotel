@@ -22,4 +22,7 @@ Route::get('language/{locale}', function ($locale) {
 Route::get('/search', [SearchController::class, 'index'])
     ->name('search');
 
+Route::post('/favorites/toggle', [FavoriteController::class, 'toggle'])
+    ->name('favorites.toggle');
+
 require __DIR__.'/settings.php';

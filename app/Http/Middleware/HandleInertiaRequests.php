@@ -56,6 +56,9 @@ class HandleInertiaRequests extends Middleware
 
                 return $allTranslations;
             },
+            'favorite_ids' => $request->user()
+                ? $request->user()->favorites()->pluck('property_id')
+                : [],
         ];
     }
 }
