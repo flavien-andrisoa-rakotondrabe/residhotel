@@ -9,10 +9,10 @@ import NearbyProperties from '@/components/landing/NearbyProperties';
 import PopularDestinations from '@/components/landing/PopularDestinations';
 import Testimonials from '@/components/landing/Testimonials';
 
-export default function Welcome() {
+export default function Landing() {
     return (
         <>
-            <Head title="Welcome">
+            <Head>
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link
                     href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600"

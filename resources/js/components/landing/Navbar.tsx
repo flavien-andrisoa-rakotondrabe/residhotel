@@ -205,10 +205,10 @@ export default function Navbar() {
                             </DropdownMenu>
                         </>
                     ) : (
-                        <Link href={login()}>
+                        <Link href="/auth">
                             <Button
                                 size="lg"
-                                className="font-body border-0 bg-gradient-amber font-semibold text-white shadow-md hover:opacity-90"
+                                className="font-body cursor-pointer border-0 bg-gradient-amber font-semibold text-white shadow-md hover:opacity-90"
                             >
                                 {'Connexion / Inscription'}
                             </Button>

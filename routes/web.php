@@ -1,12 +1,14 @@
 <?php
 
+use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\AuthController;
 
-Route::inertia('/', 'welcome', [
+Route::inertia('/', 'landing', [
     'canRegister' => Features::enabled(Features::registration()),
-])->name('home');
+])->name('landing');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
@@ -18,6 +20,8 @@ Route::get('language/{locale}', function ($locale) {
     }
     return redirect()->back();
 })->name('lang');
+
+Route::get('/auth', [AuthController::class, 'showAuth'])->name('auth');
 
 Route::get('/search', [SearchController::class, 'index'])
     ->name('search');
