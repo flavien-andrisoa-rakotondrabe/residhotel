@@ -1,10 +1,9 @@
-import { Link, useForm, usePage } from '@inertiajs/react';
+import { Link, Form, useForm, usePage } from '@inertiajs/react';
 import {
     Eye,
     EyeOff,
     Mail,
     Lock,
-    Home,
     Compass,
     ArrowRight,
     Phone,
@@ -12,9 +11,12 @@ import {
     CheckCircle2,
 } from 'lucide-react';
 import { useState } from 'react';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
+import { register } from '@/routes/auth';
 
 const PANEL_IMAGES = {
     login: {
@@ -146,94 +148,98 @@ function LoginForm({ onSwitchToSignup }: { onSwitchToSignup: () => void }) {
     };
 
     return (
-        <form onSubmit={onSubmit} className="space-y-4">
-            <div className="mb-6 space-y-1">
-                <h1 className="font-display text-2xl font-bold text-foreground-fix">
-                    Connexion
-                </h1>
-                <p className="font-body text-sm text-muted-foreground-fix">
-                    Pas encore de compte ?{' '}
-                    <button
-                        type="button"
-                        onClick={onSwitchToSignup}
-                        className="font-semibold text-primary-fix hover:underline"
-                    >
-                        Créer un compte
-                    </button>
-                </p>
-            </div>
-
-            <div className="space-y-2">
-                <Label className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase">
-                    Email
-                </Label>
-                <div className="relative mt-1.5">
-                    <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
-                    <Input
-                        type="email"
-                        placeholder="jean@email.com"
-                        value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
-                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
-                    />
+        <Form>
+            <form onSubmit={onSubmit} className="space-y-4">
+                <div className="mb-6 space-y-1">
+                    <h1 className="font-display text-2xl font-bold text-foreground-fix">
+                        Connexion
+                    </h1>
+                    <p className="font-body text-sm text-muted-foreground-fix">
+                        Pas encore de compte ?{' '}
+                        <button
+                            type="button"
+                            onClick={onSwitchToSignup}
+                            className="font-semibold text-primary-fix hover:underline"
+                        >
+                            Créer un compte
+                        </button>
+                    </p>
                 </div>
-                {errors.email && (
-                    <span className="text-desctructive text-xs">
-                        {errors.email}
-                    </span>
-                )}
-            </div>
 
-            <div className="space-y-2">
-                <div className="flex items-center justify-between">
+                <div className="space-y-2">
                     <Label className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase">
-                        Mot de passe
+                        Email
                     </Label>
-                    <Link
-                        href="/auth/forgot-password"
-                        className="font-body text-xs text-primary-fix hover:underline"
-                    >
-                        Mot de passe oublié ?
-                    </Link>
+                    <div className="relative mt-1.5">
+                        <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
+                        <Input
+                            type="email"
+                            placeholder="jean@email.com"
+                            value={data.email}
+                            onChange={(e) => setData('email', e.target.value)}
+                            className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                        />
+                    </div>
+                    {errors.email && (
+                        <span className="text-desctructive text-xs">
+                            {errors.email}
+                        </span>
+                    )}
                 </div>
-                <div className="relative">
-                    <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
-                    <Input
-                        type={showPwd ? 'text' : 'password'}
-                        placeholder="••••••••"
-                        value={data.password}
-                        onChange={(e) => setData('password', e.target.value)}
-                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
-                    />
-                    <button
-                        type="button"
-                        onClick={() => setShowPwd(!showPwd)}
-                        className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground-fix hover:text-foreground-fix"
-                    >
-                        {showPwd ? (
-                            <EyeOff className="h-4 w-4" />
-                        ) : (
-                            <Eye className="h-4 w-4" />
-                        )}
-                    </button>
-                </div>
-                {errors.password && (
-                    <span className="text-xs text-red-500">
-                        {errors.password}
-                    </span>
-                )}
-            </div>
 
-            <Button
-                type="submit"
-                disabled={loading}
-                className="font-body h-12 w-full gap-2 rounded-xl bg-gradient-brand text-base font-semibold text-primary-foreground-fix hover:opacity-90"
-                size="lg"
-            >
-                {loading ? 'Connexion...' : 'Se connecter'}
-                {!loading && <ArrowRight className="h-4 w-4" />}
-            </Button>
-        </form>
+                <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                        <Label className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase">
+                            Mot de passe
+                        </Label>
+                        <Link
+                            href="/auth/forgot-password"
+                            className="font-body text-xs text-primary-fix hover:underline"
+                        >
+                            Mot de passe oublié ?
+                        </Link>
+                    </div>
+                    <div className="relative">
+                        <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
+                        <Input
+                            type={showPwd ? 'text' : 'password'}
+                            placeholder="••••••••"
+                            value={data.password}
+                            onChange={(e) =>
+                                setData('password', e.target.value)
+                            }
+                            className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPwd(!showPwd)}
+                            className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground-fix hover:text-foreground-fix"
+                        >
+                            {showPwd ? (
+                                <EyeOff className="h-4 w-4" />
+                            ) : (
+                                <Eye className="h-4 w-4" />
+                            )}
+                        </button>
+                    </div>
+                    {errors.password && (
+                        <span className="text-xs text-red-500">
+                            {errors.password}
+                        </span>
+                    )}
+                </div>
+
+                <Button
+                    type="submit"
+                    disabled={loading}
+                    className="font-body h-12 w-full gap-2 rounded-xl bg-gradient-brand text-base font-semibold text-primary-foreground-fix hover:opacity-90"
+                    size="lg"
+                >
+                    {loading ? 'Connexion...' : 'Se connecter'}
+                    {!loading && <ArrowRight className="h-4 w-4" />}
+                </Button>
+            </form>
+        </Form>
     );
 }
 
@@ -242,243 +248,295 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
     const [showPwd, setShowPwd] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const userRoles = [
+        {
+            key: 'client',
+            title: 'Je suis voyageur',
+            desc: 'Je cherche des séjours',
+        },
+        {
+            key: 'hote',
+            title: 'Je suis hôte',
+            desc: 'Je propose un bien',
+        },
+    ];
+
     const { data, setData, post, processing, errors } = useForm({
         firstName: '',
         lastName: '',
-        phone: '',
+        tel: '',
         email: '',
         password: '',
         password_confirmation: '',
-        role: 'voyageur',
+        role: userRoles[0].key,
     });
 
-    const onSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // post(route('register.custom'));
-    };
-
     return (
-        <form onSubmit={onSubmit} className="space-y-4">
-            <div className="mb-5 space-y-1">
-                <h1 className="font-display text-2xl font-bold text-foreground-fix">
-                    Créer un compte
-                </h1>
-                <p className="font-body text-sm text-muted-foreground-fix">
-                    Déjà inscrit ?{' '}
-                    <button
-                        type="button"
-                        onClick={onSwitchToLogin}
-                        className="font-semibold text-primary-fix hover:underline"
-                    >
-                        Se connecter
-                    </button>
-                </p>
-            </div>
+        <Form
+            {...register.form()}
+            disableWhileProcessing
+            resetOnSuccess={['password', 'password_confirmation']}
+            className="space-y-4"
+        >
+            {({ processing, errors }) => (
+                <>
+                    <div className="mb-5 space-y-1">
+                        <h1 className="font-display text-2xl font-bold text-foreground-fix">
+                            Créer un compte
+                        </h1>
+                        <p className="font-body text-sm text-muted-foreground-fix">
+                            Déjà inscrit ?{' '}
+                            <button
+                                type="button"
+                                onClick={onSwitchToLogin}
+                                className="font-semibold text-primary-fix hover:underline"
+                            >
+                                Se connecter
+                            </button>
+                        </p>
+                    </div>
 
-            <div className="grid grid-cols-2 gap-3">
-                <button
-                    type="button"
-                    onClick={() => setData('role', 'voyageur')}
-                    className={`relative flex flex-col items-start gap-1.5 rounded-xl border-2 p-4 text-left ${data.role === 'voyageur' ? 'border-primary-fix bg-secondary-fix/60' : 'border-border-fix hover:border-primary-fix/40'}`}
-                >
-                    {data.role === 'voyageur' && (
-                        <CheckCircle2 className="absolute top-2.5 right-2.5 h-4 w-4 text-primary-fix" />
-                    )}
-                    <Compass
-                        className={`h-5 w-5 ${data.role === 'voyageur' ? 'text-primary-fix' : 'text-muted-foreground-fix'}`}
-                    />
-                    <span
-                        className={`font-body text-sm leading-tight font-semibold ${data.role === 'voyageur' ? 'text-primary-fix' : 'text-foreground-fix'}`}
-                    >
-                        Je suis voyageur
-                    </span>
-                    <span className="font-body text-xs text-muted-foreground-fix">
-                        Je cherche des séjours
-                    </span>
-                </button>
-                <button
-                    type="button"
-                    onClick={() => setData('role', 'hote')}
-                    className={`relative flex flex-col items-start gap-1.5 rounded-xl border-2 p-4 text-left ${data.role === 'hote' ? 'border-primary-fix bg-secondary-fix/60' : 'border-border-fix hover:border-primary-fix/40'}`}
-                >
-                    {data.role === 'hote' && (
-                        <CheckCircle2 className="absolute top-2.5 right-2.5 h-4 w-4 text-primary-fix" />
-                    )}
-                    <Home
-                        className={`h-5 w-5 ${data.role === 'hote' ? 'text-primary-fix' : 'text-muted-foreground-fix'}`}
-                    />
-                    <span
-                        className={`font-body text-sm leading-tight font-semibold ${data.role === 'hote' ? 'text-primary-fix' : 'text-foreground-fix'}`}
-                    >
-                        Je suis hôte
-                    </span>
-                    <span className="font-body text-xs text-muted-foreground-fix">
-                        Je propose un bien
-                    </span>
-                </button>
-            </div>
+                    <div className="grid grid-cols-2 gap-3">
+                        {userRoles.map((item, index) => (
+                            <button
+                                key={`user-${item.key}`}
+                                type="button"
+                                onClick={() => setData('role', item.key)}
+                                className={cn(
+                                    '${ ? relative flex flex-col items-start gap-1.5 rounded-xl border-2 p-4 text-left',
+                                    data.role === item.key
+                                        ? 'border-primary-fix bg-secondary-fix/60'
+                                        : 'border-border-fix hover:border-primary-fix/40',
+                                )}
+                            >
+                                {data.role === item.key && (
+                                    <CheckCircle2 className="absolute top-2.5 right-2.5 h-4 w-4 text-primary-fix" />
+                                )}
+                                <Compass
+                                    className={cn(
+                                        'h-5 w-5',
+                                        data.role === item.key
+                                            ? 'text-primary-fix'
+                                            : 'text-muted-foreground-fix',
+                                    )}
+                                />
+                                <span
+                                    className={cn(
+                                        'font-body text-sm leading-tight font-semibold',
+                                        data.role === item.key
+                                            ? 'text-primary-fix'
+                                            : 'text-foreground-fix',
+                                    )}
+                                >
+                                    {item.title}
+                                </span>
+                                <span className="font-body text-xs text-muted-foreground-fix">
+                                    {item.desc}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
 
-            <div className="grid grid-cols-2 gap-3">
-                <div className="">
-                    <Label className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase">
-                        Prénom
-                    </Label>
-                    <div className="relative mt-1.5">
-                        <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
-                        <Input
-                            type="text"
-                            placeholder="Jean"
-                            value={data.firstName}
-                            onChange={(e) =>
-                                setData('firstName', e.target.value)
-                            }
-                            className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                    <div className="grid grid-cols-2 gap-3">
+                        <div className="">
+                            <Label
+                                htmlFor="firstName"
+                                className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase"
+                            >
+                                Prénom
+                            </Label>
+                            <div className="relative mt-1.5">
+                                <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
+                                <Input
+                                    id="firstName"
+                                    type="text"
+                                    placeholder="Jean"
+                                    required
+                                    autoFocus
+                                    autoComplete="given-name"
+                                    className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                    value={data.firstName}
+                                    onChange={(e) =>
+                                        setData('firstName', e.target.value)
+                                    }
+                                />
+                            </div>
+                            <InputError
+                                message={errors.firstName}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div className="">
+                            <Label
+                                htmlFor="lastName"
+                                className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase"
+                            >
+                                Nom
+                            </Label>
+                            <div className="relative mt-1.5">
+                                <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
+                                <Input
+                                    id="lastName"
+                                    type="text"
+                                    required
+                                    placeholder="Dupont"
+                                    autoComplete="family-name"
+                                    className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                    value={data.lastName}
+                                    onChange={(e) =>
+                                        setData('lastName', e.target.value)
+                                    }
+                                />
+                            </div>
+
+                            <InputError
+                                message={errors.lastName}
+                                className="mt-2"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="">
+                        <Label
+                            htmlFor="tel"
+                            className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase"
+                        >
+                            Téléphone
+                        </Label>
+                        <div className="relative mt-1.5">
+                            <Phone className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
+                            <Input
+                                id="tel"
+                                type="tel"
+                                required
+                                placeholder="+33 6 00 00 00 00"
+                                autoComplete="tel"
+                                className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                value={data.tel}
+                                onChange={(e) => setData('tel', e.target.value)}
+                            />
+                        </div>
+
+                        <InputError message={errors.tel} className="mt-2" />
+                    </div>
+
+                    <div className="">
+                        <Label
+                            htmlFor="email"
+                            className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase"
+                        >
+                            Email
+                        </Label>
+                        <div className="relative mt-1.5">
+                            <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
+                            <Input
+                                id="email"
+                                type="text"
+                                required
+                                placeholder="jean@email.com"
+                                autoComplete="email"
+                                className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                value={data.email}
+                                onChange={(e) =>
+                                    setData('email', e.target.value)
+                                }
+                            />
+                        </div>
+
+                        <InputError message={errors.email} className="mt-2" />
+                    </div>
+
+                    <div className="">
+                        <Label
+                            htmlFor="password"
+                            className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase"
+                        >
+                            Mot de passe
+                        </Label>
+                        <div className="relative mt-1.5">
+                            <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
+                            <Input
+                                id="password"
+                                type="password"
+                                required
+                                autoComplete="new-password"
+                                placeholder="Min. 8 caractères"
+                                className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                value={data.password}
+                                onChange={(e) =>
+                                    setData('password', e.target.value)
+                                }
+                            />
+                        </div>
+
+                        <InputError
+                            message={errors.password}
+                            className="mt-2"
                         />
                     </div>
 
-                    {errors.firstName && (
-                        <span className="text-xs text-destructive">
-                            {errors.firstName}
-                        </span>
-                    )}
-                </div>
+                    <div className="">
+                        <Label
+                            htmlFor="confirmPassword"
+                            className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase"
+                        >
+                            Confirmer
+                        </Label>
+                        <div className="relative mt-1.5">
+                            <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
+                            <Input
+                                id="confirmPassword"
+                                type="password"
+                                required
+                                autoComplete="new-password"
+                                placeholder="Répétez le mot de passe"
+                                className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                value={data.password_confirmation}
+                                onChange={(e) =>
+                                    setData(
+                                        'password_confirmation',
+                                        e.target.value,
+                                    )
+                                }
+                            />
+                        </div>
 
-                <div className="">
-                    <Label className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase">
-                        Nom
-                    </Label>
-                    <div className="relative mt-1.5">
-                        <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
-                        <Input
-                            type="text"
-                            placeholder="Dupont"
-                            value={data.lastName}
-                            onChange={(e) =>
-                                setData('lastName', e.target.value)
-                            }
-                            className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                        <InputError
+                            message={errors.password_confirmation}
+                            className="mt-2"
                         />
                     </div>
 
-                    {errors.lastName && (
-                        <span className="text-xs text-destructive">
-                            {errors.lastName}
-                        </span>
-                    )}
-                </div>
-            </div>
+                    <Button
+                        type="submit"
+                        disabled={loading}
+                        className="font-body h-12 w-full gap-2 rounded-xl bg-gradient-brand text-base font-semibold text-primary-foreground-fix hover:opacity-90"
+                        size="lg"
+                    >
+                        {loading ? 'Création du compte...' : 'Créer mon compte'}
+                        {!loading && <ArrowRight className="h-4 w-4" />}
+                    </Button>
 
-            <div className="">
-                <Label className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase">
-                    Téléphone
-                </Label>
-                <div className="relative mt-1.5">
-                    <Phone className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
-                    <Input
-                        type="text"
-                        placeholder="+33 6 00 00 00 00"
-                        value={data.phone}
-                        onChange={(e) => setData('phone', e.target.value)}
-                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
-                    />
-                </div>
-
-                {errors.phone && (
-                    <span className="text-xs text-destructive">
-                        {errors.phone}
-                    </span>
-                )}
-            </div>
-
-            <div className="">
-                <Label className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase">
-                    Email
-                </Label>
-                <div className="relative mt-1.5">
-                    <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
-                    <Input
-                        type="text"
-                        placeholder="jean@email.com"
-                        value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
-                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
-                    />
-                </div>
-
-                {errors.email && (
-                    <span className="text-xs text-destructive">
-                        {errors.email}
-                    </span>
-                )}
-            </div>
-
-            <div className="">
-                <Label className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase">
-                    Mot de passe
-                </Label>
-                <div className="relative mt-1.5">
-                    <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
-                    <Input
-                        type="password"
-                        placeholder="Min. 8 caractères"
-                        value={data.password}
-                        onChange={(e) => setData('password', e.target.value)}
-                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
-                    />
-                </div>
-
-                {errors.password && (
-                    <span className="text-xs text-destructive">
-                        {errors.password}
-                    </span>
-                )}
-            </div>
-
-            <div className="">
-                <Label className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase">
-                    Confirmer
-                </Label>
-                <div className="relative mt-1.5">
-                    <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
-                    <Input
-                        type="password"
-                        placeholder="Répétez le mot de passe"
-                        value={data.password_confirmation}
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
-                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
-                    />
-                </div>
-
-                {errors.password_confirmation && (
-                    <span className="text-xs text-destructive">
-                        {errors.password_confirmation}
-                    </span>
-                )}
-            </div>
-
-            <Button
-                type="submit"
-                disabled={loading}
-                className="font-body h-12 w-full gap-2 rounded-xl bg-gradient-brand text-base font-semibold text-primary-foreground-fix hover:opacity-90"
-                size="lg"
-            >
-                {loading ? 'Création du compte...' : 'Créer mon compte'}
-                {!loading && <ArrowRight className="h-4 w-4" />}
-            </Button>
-
-            <p className="font-body text-center text-xs text-muted-foreground-fix">
-                En vous inscrivant, vous acceptez nos{' '}
-                <a href="#" className="text-primary-fix hover:underline">
-                    CGU
-                </a>{' '}
-                et notre{' '}
-                <a href="#" className="text-primary-fix hover:underline">
-                    politique de confidentialité
-                </a>
-                .
-            </p>
-        </form>
+                    <p className="font-body text-center text-xs text-muted-foreground-fix">
+                        En vous inscrivant, vous acceptez nos{' '}
+                        <a
+                            href="#"
+                            className="text-primary-fix hover:underline"
+                        >
+                            CGU
+                        </a>{' '}
+                        et notre{' '}
+                        <a
+                            href="#"
+                            className="text-primary-fix hover:underline"
+                        >
+                            politique de confidentialité
+                        </a>
+                        .
+                    </p>
+                </>
+            )}
+        </Form>
     );
 }

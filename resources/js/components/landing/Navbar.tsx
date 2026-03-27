@@ -78,7 +78,7 @@ export default function Navbar() {
                         </span>
                     </div>
                     <span className="font-display text-xl font-semibold tracking-wide text-white">
-                        ResidHotel
+                        Residotel
                     </span>
                 </Link>
 

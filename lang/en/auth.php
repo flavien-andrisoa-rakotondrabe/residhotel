@@ -17,4 +17,16 @@ return [
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
+    'register' => [
+        'firstName_required' => 'FirstName required.',
+        'lastName_required' => 'LastName required.',
+        'tel_required' => 'Phone number required.',
+        'tel_min' => 'Invalid phone number.',
+        'email_required' => 'Email required.',
+        'email_invalid' => 'Invalid email.',
+        'email_exists' => 'Email already registered.',
+        'password_required' => 'Password required.',
+        'password_min' => 'Password must contain 6 characters.',
+        'password_match' => "Password don't match.",
+    ],
 ];

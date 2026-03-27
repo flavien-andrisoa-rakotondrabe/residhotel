@@ -17,4 +17,16 @@ return [
     'password' => 'Mot de passe incorrect.',
     'throttle' => 'Veuillez réessayez dans :seconds secondes.',
 
+    'register' => [
+        'firstName_required' => 'Prénom requis.',
+        'lastName_required' => 'Nom requis.',
+        'tel_required' => 'Numéro de téléphone requis.',
+        'tel_min' => 'Numéro de téléphone invalide.',
+        'email_required' => 'Adresse email requise.',
+        'email_invalid' => 'Adresse email invalide.',
+        'email_exists' => 'Adresse email déjà enregistrée.',
+        'password_required' => 'Mot de passe requis.',
+        'password_min' => 'Le mot de passe doit contenir au moins 6 caractères.',
+        'password_match' => 'Les mots de passe ne correspondent pas.',
+    ],
 ];
