@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\PropertyController;
 
 Route::inertia('/', 'landing', [
     'canRegister' => Features::enabled(Features::registration()),
@@ -26,6 +27,8 @@ Route::get('language/{locale}', function ($locale) {
 Route::get('/auth', [AuthController::class, 'showAuth'])->name('auth');
 Route::get('/auth/forgot-password', [AuthController::class, 'forgotPassword'])->name('auth.forgot-password');
 Route::get('/auth/reset-password', [AuthController::class, 'resetPassword'])->name('auth.reset-password');
+
+Route::get('/property/{id}', [PropertyController::class, 'show'])->name('property.show');
 
 Route::get('/search', [SearchController::class, 'index'])
     ->name('search');

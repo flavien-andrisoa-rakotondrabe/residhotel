@@ -59,6 +59,9 @@ class HandleInertiaRequests extends Middleware
             'favorite_ids' => $request->user()
                 ? $request->user()->favorites()->pluck('property_id')
                 : [],
+            'platform' => [
+                'settings' => \App\Services\SettingService::getSettings(),
+            ],
         ];
     }
 }
