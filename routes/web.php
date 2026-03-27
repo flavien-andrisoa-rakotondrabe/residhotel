@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\FavoriteController;
 
 Route::inertia('/', 'landing', [
     'canRegister' => Features::enabled(Features::registration()),
@@ -22,6 +24,8 @@ Route::get('language/{locale}', function ($locale) {
 })->name('lang');
 
 Route::get('/auth', [AuthController::class, 'showAuth'])->name('auth');
+Route::get('/auth/forgot-password', [AuthController::class, 'forgotPassword'])->name('auth.forgot-password');
+Route::get('/auth/reset-password', [AuthController::class, 'resetPassword'])->name('auth.reset-password');
 
 Route::get('/search', [SearchController::class, 'index'])
     ->name('search');

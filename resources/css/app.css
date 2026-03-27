@@ -64,6 +64,7 @@
     --color-input: var(--input);
     --color-input-fix: var(--input-fix);
     --color-ring: var(--ring);
+    --color-ring-fix: var(--ring-fix);
 
     --color-chart-1: var(--chart-1);
     --color-chart-2: var(--chart-2);
@@ -132,6 +133,7 @@
         --input: hsl(214.3 31.8% 91.4%);
         --input-fix: hsl(214.3 31.8% 91.4%);
         --ring: hsl(222.2 84% 4.9%);
+        --ring-fix: hsl(222.2 84% 4.9%);
 
         --chart-1: oklch(0.646 0.222 41.116);
         --chart-2: oklch(0.6 0.118 184.704);

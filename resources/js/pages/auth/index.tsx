@@ -171,10 +171,10 @@ function LoginForm({ onSwitchToSignup }: { onSwitchToSignup: () => void }) {
                     <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
                     <Input
                         type="email"
+                        placeholder="jean@email.com"
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
-                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix placeholder:text-muted-foreground-fix"
-                        placeholder="jean@email.com"
+                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
                     />
                 </div>
                 {errors.email && (
@@ -203,7 +203,7 @@ function LoginForm({ onSwitchToSignup }: { onSwitchToSignup: () => void }) {
                         placeholder="••••••••"
                         value={data.password}
                         onChange={(e) => setData('password', e.target.value)}
-                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix placeholder:text-muted-foreground-fix"
+                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
                     />
                     <button
                         type="button"
@@ -332,7 +332,7 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                             onChange={(e) =>
                                 setData('firstName', e.target.value)
                             }
-                            className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix placeholder:text-muted-foreground-fix"
+                            className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
                         />
                     </div>
 
@@ -356,7 +356,7 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                             onChange={(e) =>
                                 setData('lastName', e.target.value)
                             }
-                            className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix placeholder:text-muted-foreground-fix"
+                            className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
                         />
                     </div>
 
@@ -379,7 +379,7 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                         placeholder="+33 6 00 00 00 00"
                         value={data.phone}
                         onChange={(e) => setData('phone', e.target.value)}
-                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix placeholder:text-muted-foreground-fix"
+                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
                     />
                 </div>
 
@@ -401,7 +401,7 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                         placeholder="jean@email.com"
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
-                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix placeholder:text-muted-foreground-fix"
+                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
                     />
                 </div>
 
@@ -423,7 +423,7 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                         placeholder="Min. 8 caractères"
                         value={data.password}
                         onChange={(e) => setData('password', e.target.value)}
-                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix placeholder:text-muted-foreground-fix"
+                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
                     />
                 </div>
 
@@ -447,7 +447,7 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                         onChange={(e) =>
                             setData('password_confirmation', e.target.value)
                         }
-                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix placeholder:text-muted-foreground-fix"
+                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
                     />
                 </div>
 

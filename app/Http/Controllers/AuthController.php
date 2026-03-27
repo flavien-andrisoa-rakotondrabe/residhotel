@@ -15,6 +15,14 @@ class AuthController extends Controller
         return Inertia::render('auth/index');
     }
 
+    public function forgotPassword() {
+        return Inertia::render('auth/forgot-password');
+    }
+
+    public function resetPassword() {
+        return Inertia::render('auth/reset-password');
+    }
+
     public function login(Request $request) {
         $credentials = $request->validate([
             'email' => 'required|email',
