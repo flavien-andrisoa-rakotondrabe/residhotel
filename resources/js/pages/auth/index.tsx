@@ -11,12 +11,23 @@ import {
     CheckCircle2,
 } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { register } from '@/routes/auth';
+
+interface RegisterFormInterface {
+    firstName: string;
+    lastName: string;
+    tel: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+    role: string;
+}
 
 const PANEL_IMAGES = {
     login: {
@@ -175,9 +186,11 @@ function LoginForm({ onSwitchToSignup }: { onSwitchToSignup: () => void }) {
                         <Input
                             type="email"
                             placeholder="jean@email.com"
+                            autoComplete="email"
+                            required
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
-                            className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                            className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/50 focus-visible:ring-2 focus-visible:ring-ring-fix"
                         />
                     </div>
                     {errors.email && (
@@ -204,11 +217,12 @@ function LoginForm({ onSwitchToSignup }: { onSwitchToSignup: () => void }) {
                         <Input
                             type={showPwd ? 'text' : 'password'}
                             placeholder="••••••••"
+                            required
                             value={data.password}
                             onChange={(e) =>
                                 setData('password', e.target.value)
                             }
-                            className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                            className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/50 focus-visible:ring-2 focus-visible:ring-ring-fix"
                         />
                         <button
                             type="button"
@@ -246,7 +260,6 @@ function LoginForm({ onSwitchToSignup }: { onSwitchToSignup: () => void }) {
 // ─── Signup form ──────────────────────────────────────────────────────────────
 function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
     const [showPwd, setShowPwd] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     const userRoles = [
         {
@@ -261,21 +274,45 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
         },
     ];
 
-    const { data, setData, post, processing, errors } = useForm({
-        firstName: '',
-        lastName: '',
-        tel: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        role: userRoles[0].key,
-    });
+    const { post, data, setData, errors, clearErrors } =
+        useForm<RegisterFormInterface>({
+            firstName: '',
+            lastName: '',
+            tel: '',
+            email: '',
+            password: '',
+            password_confirmation: '',
+            role: userRoles[0].key,
+        });
+
+    const handleChange = (
+        field: keyof RegisterFormInterface,
+        value: string,
+    ) => {
+        setData(field, value);
+
+        if (errors[field]) {
+            clearErrors(field);
+        }
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        post('auth.register', {
+            onSuccess: (payload) => {
+                console.log('payload:', payload);
+                toast.success('Inscription réussie !');
+            },
+        });
+    };
 
     return (
         <Form
             {...register.form()}
             disableWhileProcessing
-            resetOnSuccess={['password', 'password_confirmation']}
+            resetOnSuccess
+            onSubmit={handleSubmit}
             className="space-y-4"
         >
             {({ processing, errors }) => (
@@ -297,17 +334,19 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
-                        {userRoles.map((item, index) => (
+                        <input type="hidden" name="role" value={data.role} />
+
+                        {userRoles.map((item) => (
                             <button
                                 key={`user-${item.key}`}
                                 type="button"
-                                onClick={() => setData('role', item.key)}
                                 className={cn(
                                     '${ ? relative flex flex-col items-start gap-1.5 rounded-xl border-2 p-4 text-left',
                                     data.role === item.key
                                         ? 'border-primary-fix bg-secondary-fix/60'
                                         : 'border-border-fix hover:border-primary-fix/40',
                                 )}
+                                onClick={() => setData('role', item.key)}
                             >
                                 {data.role === item.key && (
                                     <CheckCircle2 className="absolute top-2.5 right-2.5 h-4 w-4 text-primary-fix" />
@@ -341,7 +380,10 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                         <div className="">
                             <Label
                                 htmlFor="firstName"
-                                className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase"
+                                className={cn(
+                                    'font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase',
+                                    errors.firstName && 'text-destructive',
+                                )}
                             >
                                 Prénom
                             </Label>
@@ -349,15 +391,22 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                                 <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
                                 <Input
                                     id="firstName"
+                                    name="firstName"
                                     type="text"
                                     placeholder="Jean"
                                     required
-                                    autoFocus
                                     autoComplete="given-name"
-                                    className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                    className={cn(
+                                        'font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/50 focus-visible:ring-2 focus-visible:ring-ring-fix',
+                                        errors.firstName &&
+                                            'border-destructive focus-visible:ring-destructive',
+                                    )}
                                     value={data.firstName}
                                     onChange={(e) =>
-                                        setData('firstName', e.target.value)
+                                        handleChange(
+                                            'firstName',
+                                            e.target.value,
+                                        )
                                     }
                                 />
                             </div>
@@ -370,7 +419,10 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                         <div className="">
                             <Label
                                 htmlFor="lastName"
-                                className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase"
+                                className={cn(
+                                    'font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase',
+                                    errors.lastName && 'text-destructive',
+                                )}
                             >
                                 Nom
                             </Label>
@@ -378,14 +430,19 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                                 <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
                                 <Input
                                     id="lastName"
+                                    name="lastName"
                                     type="text"
                                     required
                                     placeholder="Dupont"
                                     autoComplete="family-name"
-                                    className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                    className={cn(
+                                        'font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/50 focus-visible:ring-2 focus-visible:ring-ring-fix',
+                                        errors.lastName &&
+                                            'border-destructive focus-visible:ring-destructive',
+                                    )}
                                     value={data.lastName}
                                     onChange={(e) =>
-                                        setData('lastName', e.target.value)
+                                        handleChange('lastName', e.target.value)
                                     }
                                 />
                             </div>
@@ -400,7 +457,10 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                     <div className="">
                         <Label
                             htmlFor="tel"
-                            className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase"
+                            className={cn(
+                                'font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase',
+                                errors.tel && 'text-destructive',
+                            )}
                         >
                             Téléphone
                         </Label>
@@ -408,13 +468,20 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                             <Phone className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
                             <Input
                                 id="tel"
+                                name="tel"
                                 type="tel"
                                 required
                                 placeholder="+33 6 00 00 00 00"
                                 autoComplete="tel"
-                                className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                className={cn(
+                                    'font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/50 focus-visible:ring-2 focus-visible:ring-ring-fix',
+                                    errors.tel &&
+                                        'border-destructive focus-visible:ring-destructive',
+                                )}
                                 value={data.tel}
-                                onChange={(e) => setData('tel', e.target.value)}
+                                onChange={(e) =>
+                                    handleChange('tel', e.target.value)
+                                }
                             />
                         </div>
 
@@ -424,7 +491,10 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                     <div className="">
                         <Label
                             htmlFor="email"
-                            className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase"
+                            className={cn(
+                                'font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase',
+                                errors.email && 'text-destructive',
+                            )}
                         >
                             Email
                         </Label>
@@ -432,14 +502,19 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                             <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
                             <Input
                                 id="email"
+                                name="email"
                                 type="text"
                                 required
                                 placeholder="jean@email.com"
                                 autoComplete="email"
-                                className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                className={cn(
+                                    'font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/50 focus-visible:ring-2 focus-visible:ring-ring-fix',
+                                    errors.email &&
+                                        'border-destructive focus-visible:ring-destructive',
+                                )}
                                 value={data.email}
                                 onChange={(e) =>
-                                    setData('email', e.target.value)
+                                    handleChange('email', e.target.value)
                                 }
                             />
                         </div>
@@ -450,7 +525,10 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                     <div className="">
                         <Label
                             htmlFor="password"
-                            className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase"
+                            className={cn(
+                                'font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase',
+                                errors.password && 'text-destructive',
+                            )}
                         >
                             Mot de passe
                         </Label>
@@ -458,16 +536,32 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
                             <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
                             <Input
                                 id="password"
-                                type="password"
+                                name="password"
+                                type={showPwd ? 'text' : 'password'}
                                 required
                                 autoComplete="new-password"
                                 placeholder="Min. 8 caractères"
-                                className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                className={cn(
+                                    'font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/50 focus-visible:ring-2 focus-visible:ring-ring-fix',
+                                    errors.password &&
+                                        'border-destructive focus-visible:ring-destructive',
+                                )}
                                 value={data.password}
                                 onChange={(e) =>
-                                    setData('password', e.target.value)
+                                    handleChange('password', e.target.value)
                                 }
                             />
+                            <button
+                                type="button"
+                                onClick={() => setShowPwd(!showPwd)}
+                                className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-muted-foreground-fix hover:text-foreground-fix"
+                            >
+                                {showPwd ? (
+                                    <EyeOff className="h-4 w-4" />
+                                ) : (
+                                    <Eye className="h-4 w-4" />
+                                )}
+                            </button>
                         </div>
 
                         <InputError
@@ -478,23 +572,32 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
 
                     <div className="">
                         <Label
-                            htmlFor="confirmPassword"
-                            className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase"
+                            htmlFor="password_confirmation"
+                            className={cn(
+                                'font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase',
+                                errors.password_confirmation &&
+                                    'text-destructive',
+                            )}
                         >
                             Confirmer
                         </Label>
                         <div className="relative mt-1.5">
                             <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
                             <Input
-                                id="confirmPassword"
+                                id="password_confirmation"
+                                name="password_confirmation"
                                 type="password"
                                 required
                                 autoComplete="new-password"
                                 placeholder="Répétez le mot de passe"
-                                className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                className={cn(
+                                    'font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/50 focus-visible:ring-2 focus-visible:ring-ring-fix',
+                                    errors.password_confirmation &&
+                                        'border-destructive focus-visible:ring-destructive',
+                                )}
                                 value={data.password_confirmation}
                                 onChange={(e) =>
-                                    setData(
+                                    handleChange(
                                         'password_confirmation',
                                         e.target.value,
                                     )
@@ -510,12 +613,14 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
 
                     <Button
                         type="submit"
-                        disabled={loading}
+                        disabled={processing}
                         className="font-body h-12 w-full gap-2 rounded-xl bg-gradient-brand text-base font-semibold text-primary-foreground-fix hover:opacity-90"
                         size="lg"
                     >
-                        {loading ? 'Création du compte...' : 'Créer mon compte'}
-                        {!loading && <ArrowRight className="h-4 w-4" />}
+                        {processing
+                            ? 'Création du compte...'
+                            : 'Créer mon compte'}
+                        {!processing && <ArrowRight className="h-4 w-4" />}
                     </Button>
 
                     <p className="font-body text-center text-xs text-muted-foreground-fix">

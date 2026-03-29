@@ -1,11 +1,15 @@
 <?php
 
 namespace App\Services;
-use App\Models\User;
+
 use App\DTOs\UserDTO;
+use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Hash;
 
 class AuthService {
-    public function register(UserDTO $dto): User {
-        return User::create((array) $dto);
+    public function __construct(protected UserRepository $userRepository) {}
+
+    public function register(UserDTO $dto) {
+        return $this->userRepository->create((array) $dto);
     }
 }

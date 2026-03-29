@@ -29,4 +29,12 @@ return [
         'password_min' => 'Le mot de passe doit contenir au moins 6 caractères.',
         'password_match' => 'Les mots de passe ne correspondent pas.',
     ],
+
+    'email'=>[
+        'subject' => 'Bienvenue dans :appName',
+        'title' => 'Bienvenue :lastName :firstName !',
+        'description' => "Votre compte a bien été créé sur :appName. Pour commencer, veuillez cliquer sur le bouton suivant afin d'activer votre compte :",
+        'button' => 'Activer mon compte',
+        'if_error' => "Si vous ne vous êtes pas inscrit, veuillez juste ignorer ce mail."
+    ]
 ];

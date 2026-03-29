@@ -1,14 +1,18 @@
 <?php
 
 namespace App\Observers;
+
 use App\Models\User;
-use App\Mail\WelcomeMail;
-use Illuminate\Support\Facades\Mail;
+use App\Notifications\VerifyEmailNotification;
 
 class UserObserver {
-    public function updated(User $user) {
-        if ($user->wasChanged('email_verified_at') && $user->email_verified_at !== null) {
-            Mail::to($user->email)->send(new WelcomeMail($user));
-        }
+    public function created(User $user): void {
+        $user->notify(new VerifyEmailNotification());
     }
+
+    // public function updated(User $user) {
+    //     if ($user->wasChanged('email_verified_at') && $user->email_verified_at !== null) {
+    //         Mail::to($user->email)->send(new WelcomeMail($user));
+    //     }
+    // }
 }

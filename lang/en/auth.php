@@ -29,4 +29,12 @@ return [
         'password_min' => 'Password must contain 6 characters.',
         'password_match' => "Password don't match.",
     ],
+
+    'email'=>[
+        'subject' => 'Welcome to :appName',
+        'title' => 'Welcome :firstName :lastName!',
+        'description' => "You just signed up to :appName. To ge started, click the button bellow to activate your account:",
+        'button' => 'Activate my account',
+        'if_error' => "If you didn't register, you can safely ignore this email."
+    ]
 ];

@@ -11,6 +11,7 @@ use Inertia\Inertia;
 use App\Http\Requests\RegisterRequest;
 use App\DTOs\UserDTO;
 use App\Services\AuthService;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
@@ -42,9 +43,11 @@ class AuthController extends Controller
         return back()->withErrors(['login_email' => 'Identifiants incorrects.']);
     }
 
-    public function register(RegisterRequest $request) {
+    public function register(RegisterRequest $request): JsonResponse {
         $dto = UserDTO::fromRequest($request);
+
         $this->authService->register($dto);
-        return response()->json(['message' => 'Lien de confirmation envoyé !'], 201);
+
+        return redirect()->route('auth')->with('success', 'Lien de confirmation envoyé !');
     }
 }
