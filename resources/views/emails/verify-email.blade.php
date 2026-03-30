@@ -20,7 +20,7 @@
                     </tr>
                     <tr>
                       <td align="left" style="font-size:0px;padding:0 25px 25px 25px;word-break:break-word">
-                        <div style="font-family:Arial,sans-serif;font-size:14px;line-height:1;text-align:left;color:#55575d">{{ __('auth.email.description') }}</div>
+                        <div style="font-family:Arial,sans-serif;font-size:14px;line-height:1;text-align:left;color:#55575d">{{ __('auth.email.description', ['appName' => $appName]) }}</div>
                       </td>
                     </tr>
                     <tr>

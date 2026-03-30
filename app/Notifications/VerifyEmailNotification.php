@@ -7,10 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Notifications\Notifiable;
 
-class VerifyEmailNotification extends Notification
+class VerifyEmailNotification extends Notification implements ShouldQueue
 {
-    use Queueable;
+    use Notifiable; use Queueable;
 
     /**
      * Create a new notification instance.
@@ -46,6 +47,7 @@ class VerifyEmailNotification extends Notification
             ->subject(__('auth.email.subject', ['appName' => $appName]))
             ->view('emails.verify-email', [
                 'url' => $verificationUrl,
+                'appName' => $appName,
                 'user' => $notifiable
             ]);
     }

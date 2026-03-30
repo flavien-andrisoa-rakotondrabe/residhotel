@@ -12,6 +12,7 @@ use App\Http\Requests\RegisterRequest;
 use App\DTOs\UserDTO;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -43,11 +44,11 @@ class AuthController extends Controller
         return back()->withErrors(['login_email' => 'Identifiants incorrects.']);
     }
 
-    public function register(RegisterRequest $request): JsonResponse {
+    public function register(RegisterRequest $request): Response {
         $dto = UserDTO::fromRequest($request);
 
         $this->authService->register($dto);
 
-        return redirect()->route('auth')->with('success', 'Lien de confirmation envoyé !');
+        return back()->with('success', 'Successfully registered!');
     }
 }
