@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react';
+import CategoryScroll from '@/components/landing/CategoryScroll';
 import FeaturedProperties from '@/components/landing/FeaturedProperties';
 import Footer from '@/components/landing/Footer';
 import HeroSection from '@/components/landing/HeroSection';
@@ -19,15 +20,19 @@ export default function Landing() {
                     rel="stylesheet"
                 />
             </Head>
-            <Navbar />
-            <HeroSection />
-            <NearbyProperties />
-            <PopularDestinations />
-            <FeaturedProperties />
-            <HowItWorks />
-            <Testimonials />
-            <HostCTA />
-            <Footer />
+
+            <div className="min-h-screen bg-background">
+                <Navbar />
+                <HeroSection />
+                <CategoryScroll />
+                {/* <NearbyProperties /> */}
+                <PopularDestinations />
+                <FeaturedProperties />
+                <HowItWorks />
+                <Testimonials />
+                <HostCTA />
+                <Footer />
+            </div>
         </>
     );
 }
