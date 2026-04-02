@@ -1,52 +1,70 @@
 import { Link, useForm } from '@inertiajs/react';
 import { Mail, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 export default function ForgotPasswordPage() {
     const [sent, setSent] = useState(false);
-    const [loading, setLoading] = useState(false);
 
-    const { data, setData, post, processing, errors } = useForm({
+    const {
+        post,
+        data,
+        setData,
+        errors,
+        hasErrors,
+        clearErrors,
+        processing,
+        reset,
+    } = useForm({
         email: '',
     });
 
-    const onSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        post('/auth/forgot-password', {
+            onSuccess: () => {
+                reset();
+                toast.success('Inscription réussie!');
+            },
+        });
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-background-fix px-6">
+        <div className="flex min-h-screen items-center justify-center bg-background px-6">
             <div className="w-full max-w-sm">
                 <Link href="/" className="mb-10 flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-amber">
-                        <span className="font-display text-sm font-bold text-white">
-                            R
-                        </span>
-                    </div>
-                    <span className="font-display text-lg font-semibold text-primary-fix">
+                    <img
+                        src="/logo.svg"
+                        alt="Residotel"
+                        className="h-8 w-8 rounded-lg"
+                    />
+                    <span className="font-display text-lg font-semibold text-foreground">
                         Residotel
                     </span>
                 </Link>
 
                 {sent ? (
                     <div className="space-y-4 text-center">
-                        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary-fix/10">
-                            <CheckCircle2 className="h-7 w-7 text-primary-fix" />
+                        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-accent/10">
+                            <CheckCircle2 className="h-7 w-7 text-accent" />
                         </div>
-                        <h2 className="font-display text-2xl font-bold text-foreground-fix">
+                        <h2 className="font-display text-2xl font-bold text-foreground">
                             Email envoyé !
                         </h2>
-                        <p className="font-body text-sm text-muted-foreground-fix">
+                        <p className="font-body text-sm text-muted-foreground">
                             Vérifiez votre boîte mail et cliquez sur le lien
                             pour réinitialiser votre mot de passe.
                         </p>
-                        <Link href="/auth">
+                        <Link href="/auth/login">
                             <Button
                                 variant="outline"
-                                className="font-body h-10 cursor-pointer rounded-sm border-input-fix px-4 py-2 text-primary-fix hover:text-primary-fix dark:border-input-fix/90"
+                                className="font-body mt-4 rounded-xl"
                             >
                                 Retour à la connexion
                             </Button>
@@ -54,42 +72,69 @@ export default function ForgotPasswordPage() {
                     </div>
                 ) : (
                     <>
-                        <h1 className="font-display mb-1 text-3xl font-bold text-foreground-fix">
+                        <h1 className="font-display mb-1 text-3xl font-bold text-foreground">
                             Mot de passe oublié
                         </h1>
-                        <p className="font-body mb-8 text-sm text-muted-foreground-fix">
+                        <p className="font-body mb-8 text-sm text-muted-foreground">
                             Entrez votre email, nous vous enverrons un lien de
                             réinitialisation.
                         </p>
-                        <form onSubmit={onSubmit} className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-5">
                             <div className="">
-                                <Label className="font-body text-xs font-semibold tracking-wide text-muted-foreground-fix uppercase">
+                                <Label
+                                    htmlFor="email"
+                                    className={cn(
+                                        'font-body text-xs font-semibold tracking-wide text-muted-foreground uppercase',
+                                        errors.email && 'text-destructive',
+                                    )}
+                                >
                                     Email
                                 </Label>
                                 <div className="relative mt-1.5">
-                                    <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground-fix" />
+                                    <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                     <Input
-                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        type="text"
+                                        required
                                         placeholder="jean@email.com"
-                                        className="font-body h-11 border-input-fix pl-9 text-muted-foreground-fix ring-offset-2 placeholder:text-muted-foreground-fix focus-visible:border-input-fix/70 focus-visible:ring-2 focus-visible:ring-ring-fix"
+                                        autoComplete="email"
+                                        className={cn(
+                                            'font-body h-12 rounded-xl border-border bg-muted/30 pl-10 ring-ring ring-offset-2 transition-colors focus-visible:border-border/50 focus-visible:bg-card focus-visible:ring-2',
+                                            errors.email &&
+                                                'border-destructive focus-visible:ring-destructive',
+                                        )}
+                                        value={data.email}
+                                        onChange={(e) => {
+                                            setData('email', e.target.value);
+
+                                            if (errors.email) {
+                                                clearErrors('email');
+                                            }
+                                        }}
                                     />
                                 </div>
+
+                                <InputError
+                                    message={errors.email}
+                                    className="mt-2"
+                                />
                             </div>
 
                             <Button
                                 type="submit"
-                                disabled={loading}
-                                className="font-body h-12 w-full rounded-xl bg-gradient-brand font-semibold text-primary-foreground-fix hover:opacity-90"
+                                disabled={processing || hasErrors}
+                                className="font-body h-12 w-full rounded-xl bg-gradient-coral font-semibold text-white shadow-hero hover:opacity-90"
                                 size="lg"
                             >
-                                {loading
+                                {processing
                                     ? 'Envoi en cours...'
                                     : 'Envoyer le lien'}
                             </Button>
                             <div className="text-center">
                                 <Link
-                                    href="/auth"
-                                    className="font-body text-sm text-primary-fix hover:underline"
+                                    href="/auth/login"
+                                    className="font-body text-sm text-accent hover:underline"
                                 >
                                     Retour à la connexion
                                 </Link>

@@ -343,7 +343,7 @@ export function SignupForm({
                         errors.password_confirmation && 'text-destructive',
                     )}
                 >
-                    Mot de passe
+                    Confirmer mot de passe
                 </Label>
                 <div className="relative mt-1.5">
                     <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -368,17 +368,6 @@ export function SignupForm({
                             }
                         }}
                     />
-                    <button
-                        type="button"
-                        onClick={() => setShowPwd(!showPwd)}
-                        className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground"
-                    >
-                        {showPwd ? (
-                            <EyeOff className="h-4 w-4" />
-                        ) : (
-                            <Eye className="h-4 w-4" />
-                        )}
-                    </button>
                 </div>
 
                 <InputError
