@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\StaticPageController;
 
 Route::inertia('/', 'landing', [
     'canRegister' => Features::enabled(Features::registration()),
@@ -29,6 +30,18 @@ Route::get('/auth/forgot-password', [AuthController::class, 'forgotPassword'])->
 Route::get('/auth/reset-password', [AuthController::class, 'resetPassword'])->name('auth.reset-password');
 
 Route::post('/auth/register', [AuthController::class, 'register'])->name('auth.register');
+
+Route::get('/about', [StaticPageController::class, 'showAbout'])->name('about');
+Route::get('/how-it-works', [StaticPageController::class, 'showHowItWorks'])->name('how-it-works');
+Route::get('/blog', [StaticPageController::class, 'showBlog'])->name('blog');
+Route::get('/careers', [StaticPageController::class, 'showCareers'])->name('careers');
+Route::get('/destinations', [StaticPageController::class, 'showDestinations'])->name('destinations');
+Route::get('/offers', [StaticPageController::class, 'showOffers'])->name('offers');
+Route::get('/insurance', [StaticPageController::class, 'showInsurance'])->name('insurance');
+Route::get('/help', [StaticPageController::class, 'showHelp'])->name('help');
+Route::get('/host-help', [StaticPageController::class, 'showHostHelp'])->name('host-help');
+Route::get('/certification', [StaticPageController::class, 'showCertification'])->name('certification');
+Route::get('/legal', [StaticPageController::class, 'showLegal'])->name('legal');
 
 Route::get('/property/{id}', [PropertyController::class, 'show'])->name('property.show');
 

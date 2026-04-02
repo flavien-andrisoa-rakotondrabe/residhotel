@@ -10,25 +10,25 @@ import {
 
 const footerLinks: Record<string, { label: string; href: string }[]> = {
     Residotel: [
-        { label: 'À propos', href: '/a-propos' },
-        { label: 'Comment ça marche', href: '/comment-ca-marche' },
+        { label: 'À propos', href: '/about' },
+        { label: 'Comment ça marche', href: '/how-it-works' },
         { label: 'Blog', href: '/blog' },
-        { label: 'Carrières', href: '/carrieres' },
+        { label: 'Carrières', href: '/careers' },
     ],
     Voyageurs: [
         { label: 'Rechercher', href: '/search' },
         { label: 'Destinations', href: '/destinations' },
-        { label: 'Offres spéciales', href: '/offres' },
-        { label: 'Assurance', href: '/assurance' },
+        { label: 'Offres spéciales', href: '/offers' },
+        { label: 'Assurance', href: '/insurance' },
     ],
     Hôtes: [
         { label: 'Devenir hôte', href: '/dashboard' },
         { label: 'Certification', href: '/certification' },
         { label: 'Revenus', href: '/dashboard' },
-        { label: 'Aide hôtes', href: '/aide-hotes' },
+        { label: 'Aide hôtes', href: '/host-help' },
     ],
     Support: [
-        { label: "Centre d'aide", href: '/aide' },
+        { label: "Centre d'aide", href: '/help' },
         { label: 'CGU', href: '/legal#cgu' },
         { label: 'Confidentialité', href: '/legal#confidentialite' },
         { label: 'Contact', href: 'mailto:contact@residotel.com' },
