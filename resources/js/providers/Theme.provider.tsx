@@ -1,9 +1,26 @@
-import { useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 
 type Theme = 'dark' | 'light' | 'system';
 
-export function useTheme() {
-    // Initialisation : on récupère le choix stocké ou "system" par défaut
+interface ThemeContextType {
+    theme: Theme;
+    setTheme: React.Dispatch<React.SetStateAction<Theme>>;
+}
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export const useTheme = (): ThemeContextType => {
+    const context = useContext(ThemeContext);
+
+    if (context === undefined) {
+        throw new Error('useToast must be used within a useToast');
+    }
+
+    return context;
+};
+
+export default function ThemeProvider({ children }: { children: ReactNode }) {
     const [theme, setTheme] = useState<Theme>(
         () => (localStorage.getItem('theme') as Theme) || 'system',
     );
@@ -42,5 +59,9 @@ export function useTheme() {
         }
     }, [theme]);
 
-    return { theme, setTheme };
+    return (
+        <ThemeContext.Provider value={{ theme, setTheme }}>
+            {children}
+        </ThemeContext.Provider>
+    );
 }

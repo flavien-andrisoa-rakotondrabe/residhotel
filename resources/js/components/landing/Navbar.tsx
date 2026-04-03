@@ -25,9 +25,9 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useTheme } from '@/hooks/use-theme';
 import { cn } from '@/lib/utils';
-import { dashboard, lang, login, logout } from '@/routes';
+import { useTheme } from '@/providers/Theme.provider';
+import { logout } from '@/routes';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
